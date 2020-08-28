@@ -38,6 +38,8 @@ print(f"{fontcolors.FAIL}[3]{fontcolors.ENDC}",f"{fontcolors.BOLD}HQ-default 480
 
 print(f"{fontcolors.FAIL}[4]{fontcolors.ENDC}",f"{fontcolors.BOLD}MQ-default 360p(320*180px){fontcolors.ENDC}")
 
+print(f"\n{fontcolors.WARNING}NOTE:{fontcolors.ENDC}",f"{fontcolors.BOLD}You may get error if the channel owner has uploaded a thumbnail lower than the resolution you selected.In such case please try downloading resolution lower than that.{fontcolors.WARNING}")
+
 #valid_input=[1,2,3,4]
 
 usr=input("\n##>")
@@ -54,25 +56,27 @@ yt_url4='https://img.youtube.com/vi/'+id+'/mqdefault.jpg'
 
 
 def msg():
-	print(f"\n{fontcolors.OKGREEN} Downloaded Successfully...{fontcolors.ENDC}")
+	print(f"\n{fontcolors.OKGREEN} Downloaded Successfully...{fontcolors.ENDC}","saved as",local_image_filename)
 
 if usr == '1':
-	wget.download(yt_url1)
+	local_image_filename=wget.download(yt_url1)
 	msg()
 
 
 elif usr == '2':
-	wget.download(yt_url2)
+	local_image_filename=wget.download(yt_url2)
 	msg()
 
 
 elif usr == '3':
-	wget.download(yt_url3)
+	local_image_filename=wget.download(yt_url3)
 	msg()
 
 elif usr == '4':
-	wget.download(yt_url4)
+	local_image_filename=wget.download(yt_url4)
 	msg()
 	
 else:
 	print("Please select a valid input ! ")
+	
+	
