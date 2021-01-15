@@ -12,13 +12,13 @@ Simple python3 tool to download youtube thumbnails.
 ```
 git clone https://github.com/sumit-buddy/YTthumbgrabber
 
+cd YTthumbgrabber
+
 pip3 install -r requirements.txt
 ```
 
 ### Run
 ```
-cd YTthumbgrabber
-
 python3 YTthumbgrabber.py
 ```
 
