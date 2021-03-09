@@ -23,7 +23,7 @@ python3 YTthumbgrabber.py
 ```
 
 ### Screenshots
-![youtube thumbnail downloader](https://github.com/sumit-buddy/YTthumbgrabber/blob/master/photo-sample.jpg)
+<p>![youtube thumbnail downloader](https://github.com/sumit-buddy/YTthumbgrabber/blob/master/photo-sample.jpg)</p>
 ![youtube thumbnail downloader](https://github.com/sumit-buddy/YTthumbgrabber/blob/master/scrshot_1.jpg)
 ![youtube thumbnail downloader](https://github.com/sumit-buddy/YTthumbgrabber/blob/master/scrshot_2.jpg)
 
