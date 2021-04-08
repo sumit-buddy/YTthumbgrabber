@@ -1,82 +1,142 @@
+import os, sys, json
 import requests
 import wget
-import pyfiglet
+from cfonts import render
+from urllib.error import HTTPError
+from termcolor import colored
 
-class fontcolors:
-    HEADER = '\033[95m'
-    OKBLUE = '\033[94m'
-    OKGREEN = '\033[92m'
-    WARNING = '\033[93m'
-    FAIL = '\033[91m'
-    ENDC = '\033[0m'
-    BOLD = '\033[1m'
-    UNDERLINE = '\033[4m'
+class fontcolor():
+	def green(string):
+		return colored(string, "green", attrs=['bold'])
+	def white(string):
+		return colored(string, "white", attrs=['bold'])
+	def cyan(string):
+		return colored(string, "cyan", attrs=['bold'])
+	def red(string):
+		return colored(string, "red", attrs=['bold'])
+
+class smb:
+	WARN = fontcolor.red(" [-] ")
+	DONE = fontcolor.green(" [+] ")
+	INPUT = fontcolor.cyan(" [»] ")
+	ONE = fontcolor.cyan(" [1] ")
+	TWO = fontcolor.cyan(" [2] ")
+	THREE = fontcolor.cyan(" [3] ")
+	FOUR = fontcolor.cyan(" [4] ")
+	FIVE = fontcolor.cyan(" [5] ")
 
 #banner art
-banner = pyfiglet.figlet_format("YOUTUBE \nTHUMB \nGRABBER")
+banner = render("youtube thumbnail downloader", font='chrome',colors=["green","green","green"],align='center')
 print(banner)
 
-print(f"{fontcolors.WARNING} #####> AUTHOR : Sumit <##### {fontcolors.ENDC}")
+#instructions menu
+print(smb.DONE + fontcolor.green("USAGE INSTRUCTIONS :"))
+print(smb.ONE + fontcolor.white("Paste YouTube Video Link"))
+print(smb.TWO + fontcolor.white("Select Desired Resolution"))
 
-#instructions
-print(f"\n{fontcolors.OKGREEN}*** USAGE INSTRUCTIONS ***{fontcolors.ENDC}")
+#getting youtube link
+yt_link = None
+while not yt_link:
+	yt_link = input("\n" + smb.INPUT + fontcolor.white("Paste YouTube Video Link : "))
 
-print(f"{fontcolors.FAIL}[*]{fontcolors.ENDC}",f"{fontcolors.BOLD}Paste video link & hit enter{fontcolors.ENDC}")
+#validating link using oembed API
+pre_link = "https://www.youtube.com/oembed?format=json&url="
+url = pre_link + yt_link
+id = yt_link.split('/')[-1]
 
-print(f"{fontcolors.FAIL}[*]{fontcolors.ENDC}",f"{fontcolors.BOLD}Select desired resolution & hit enter.{fontcolors.ENDC}")
+def check_url():
+	request = requests.get(url)
+	return request.status_code == 200
 
+while check_url() == False:
+	print("\n" + smb.WARN + fontcolor.red("Invalid Link ! It Should Be Like – https://youtu.be/video_id !"))
+	quit()
 
-url=input("\n##> Paste YouTube video link here : ")
+# getting video title and channel menu
+get_info = requests.get(url).json()
+title = get_info['title']
+channel = get_info['author_name']
+print("\n" + smb.DONE + fontcolor.green("VIDEO INFORMATION :"))
+print(smb.INPUT + fontcolor.cyan("Title : ") + fontcolor.white(title))
+print(smb.INPUT + fontcolor.cyan("Channel : ") + fontcolor.white(channel))
 
-print(f"\n{fontcolors.OKGREEN}*** SELECT RESOLUTION ***{fontcolors.ENDC}")
+# selecting resolution menu
+print("\n" + smb.DONE + fontcolor.green("RESOLUTIONS :"))
+print(smb.ONE + fontcolor.white("HD-Default 1080p(1280*720px) - Maximum Resolution"))
+print(smb.TWO + fontcolor.white("SD-Default 720p(640*480px)"))
+print(smb.THREE + fontcolor.white("HQ-Default 480p(480*360px)"))
+print(smb.FOUR + fontcolor.white("MQ-Default 360p(320*180px)"))
+print(smb.FIVE + fontcolor.white("Default 144p(120*90) - Lowest Resolution"))
 
-print(f"{fontcolors.FAIL}[1]{fontcolors.ENDC}",f"{fontcolors.BOLD}HD-default 1080p(1280*720px)-maximum resolution{fontcolors.ENDC}")
+#input resolution
+usr = None
+while not usr:
+	usr = input("\n" + smb.INPUT + fontcolor.white("Select Resolution [1,2,3,4,5] > "))
 
-print(f"{fontcolors.FAIL}[2]{fontcolors.ENDC}",f"{fontcolors.BOLD}SD-default 720p(640*480px){fontcolors.ENDC}")
-
-print(f"{fontcolors.FAIL}[3]{fontcolors.ENDC}",f"{fontcolors.BOLD}HQ-default 480p(480*360px){fontcolors.ENDC}")
-
-print(f"{fontcolors.FAIL}[4]{fontcolors.ENDC}",f"{fontcolors.BOLD}MQ-default 360p(320*180px){fontcolors.ENDC}")
-
-print(f"\n{fontcolors.WARNING}NOTE:{fontcolors.ENDC}",f"{fontcolors.BOLD}You may get error if the channel owner has uploaded a thumbnail lower than the resolution you selected.In such case please try downloading resolution lower than that.{fontcolors.WARNING}")
-
-#valid_input=[1,2,3,4]
-
-usr=input("\n##>")
-					
-id=url.split('/')[-1]
-
+#get images from "i3.ytimg.com" or "img.youtube.com"
 yt_url1='https://img.youtube.com/vi/'+id+'/maxresdefault.jpg'
-
 yt_url2='https://img.youtube.com/vi/'+id+'/sddefault.jpg'
-
 yt_url3='https://img.youtube.com/vi/'+id+'/hqdefault.jpg'
-
 yt_url4='https://img.youtube.com/vi/'+id+'/mqdefault.jpg'
+yt_url5='https://img.youtube.com/vi/'+id+'/default.jpg'
 
-
+#Download message
 def msg():
-	print(f"\n{fontcolors.OKGREEN} Downloaded Successfully...{fontcolors.ENDC}","saved as",local_image_filename)
+	print("\n" + smb.DONE + fontcolor.green("Downloaded Successfully...Saved As ==>"),local_image_filename)
 
+#Downloding thumbnail over users input [1,2,3,4,5]
 if usr == '1':
-	local_image_filename=wget.download(yt_url1)
-	msg()
-
+	try:
+		local_image_filename=wget.download(yt_url1)
+		msg()
+	except HTTPError:
+		print("\n" + smb.WARN + fontcolor.red("Resolution Unavailable...Download A Lower Resolution."))
 
 elif usr == '2':
-	local_image_filename=wget.download(yt_url2)
-	msg()
-
+	try:
+		local_image_filename=wget.download(yt_url2)
+		msg()
+	except HTTPError:
+		print("\n" + smb.WARN + fontcolor.red("Resolution Unavailable...Download A Lower Resolution."))
 
 elif usr == '3':
-	local_image_filename=wget.download(yt_url3)
-	msg()
+	try:
+		local_image_filename=wget.download(yt_url3)
+		msg()
+	except HTTPError:
+		print("\n" + smb.WARN + fontcolor.red("Resolution Unavailable...Download A Lower Resolution."))
 
 elif usr == '4':
-	local_image_filename=wget.download(yt_url4)
-	msg()
-	
+	try:
+		local_image_filename=wget.download(yt_url4)
+		msg()
+	except HTTPError:
+		print("\n" + smb.WARN + fontcolor.red("Resolution Unavailable...Download A Lower Resolution."))
+
+elif usr == '5':
+	try:
+		local_image_filename=wget.download(yt_url5)
+		msg()
+	except HTTPError:
+		print("\n" + smb.WARN + fontcolor.red("Resolution Unavailable...Download A Lower Resolution."))
+
 else:
-	print("Please select a valid input ! ")
-	
-	
+	print("\n" + smb.WARN + fontcolor.red("Please Select A Valid Input ! "))
+
+#function for clearing screen
+def clr_scr():
+    if os.name == 'posix':
+        _ = os.system('clear')
+    else:
+        _ = os.system('cls')
+
+#Restarting program
+def restart_program():
+        python = sys.executable
+        os.execl(python, python, * sys.argv)
+
+if __name__ == "__main__":
+    answer = input("\n" + smb.INPUT + fontcolor.cyan("Do You Want To Continue? (Y/N) : "))
+    if answer.lower().strip() in "y".split():
+        clr_scr()
+        restart_program()

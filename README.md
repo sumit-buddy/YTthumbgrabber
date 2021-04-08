@@ -3,31 +3,22 @@
 
 Simple python3 tool to download youtube thumbnails.
 
+## Preview
+![youtube thumbnail downloader python script](https://raw.githubusercontent.com/sumit-buddy/YTthumbgrabber/master/YTthumbgrabber.gif)
+
 ### Requirements
 ```
 - Python3
 ```
 
-### Installation 
+### Installing & Running
 ```
 git clone https://github.com/sumit-buddy/YTthumbgrabber
 
 cd YTthumbgrabber
 
 pip3 install -r requirements.txt
-```
 
-### Run
-```
 python3 YTthumbgrabber.py
 ```
-
-### Screenshots
-![youtube thumbnail downloader](https://github.com/sumit-buddy/YTthumbgrabber/blob/master/photo-sample.jpg)
-![youtube thumbnail downloader](https://github.com/sumit-buddy/YTthumbgrabber/blob/master/scrshot_1.jpg)
-![youtube thumbnail downloader](https://github.com/sumit-buddy/YTthumbgrabber/blob/master/scrshot_2.jpg)
-
-### Note
-- Please do not enter wrong input it may cause error and you will have to restart the program.
-
 

@@ -1,3 +1,5 @@
 requests
 wget
 pyfiglet
+termcolor
+urllib3
