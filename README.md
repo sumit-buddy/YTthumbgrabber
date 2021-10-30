@@ -1,7 +1,7 @@
 ## YTthumbgrabber
-- <strong>YouTube Thumbnail Downloader</strong>
+- **YouTube Thumbnail Downloader**
 
-Simple python3 tool to download youtube thumbnails.
+A simple python3 tool to download youtube thumbnails.
 
 ## Preview
 ![youtube thumbnail downloader python script](https://raw.githubusercontent.com/sumit-buddy/YTthumbgrabber/master/YTthumbgrabber.gif)
